@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo de Servicios | Smart Cloud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --primary:#3f86c6;
+  --secondary:#6ec1e4;
+  --bg:#f7fbff;
+  --card:#ffffff;
+  --soft:#eef6ff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --radius:22px;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:'Segoe UI',Tahoma,sans-serif
+}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#f7fbff,#eef6ff);
+  color:var(--text)
+}
+
+/* ===== HEADER ===== */
+header{
+  background:#ffffff;
+  padding:36px 48px;
+  display:flex;
+  align-items:center;
+  gap:32px;
+  box-shadow:0 10px 30px rgba(0,0,0,.05)
+}
+
+header img{
+  height:90px
+}
+
+header h2{
+  margin:0;
+  font-size:32px
+}
+
+header p{
+  margin:8px 0 0;
+  color:var(--muted)
+}
+
+/* ===== CONTAINER ===== */
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:48px 32px
+}
+
+/* ===== SERVICES GRID ===== */
+.services-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+  margin-bottom:48px
+}
+
+.service-card{
+  background:#ffffff;
+  border-radius:18px;
+  padding:20px;
+  cursor:pointer;
+  border:1px solid #e6eef8;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  transition:.25s;
+}
+
+.service-card:hover{
+  border-color:var(--primary);
+  transform:translateY(-4px);
+}
+
+.service-card.active{
+  border-color:var(--primary);
+  background:#f9fcff;
+}
+
+.service-card img{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+  border-radius:14px;
+  background:#f1f5f9;
+}
+
+.service-card h4{
+  margin:6px 0 0;
+  font-size:14px;
+  line-height:1.3;
+}
+
+.service-card span{
+  font-size:12px;
+  color:var(--primary);
+  margin-top:auto;
+  font-weight:500;
+}
+
+
+
+/* ===== DETAIL NUEVO LAYOUT ===== */
+.detail{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:0;
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+  overflow:hidden
+}
+
+.detail-inner{
+  display:grid;
+  grid-template-columns:45% 55%;
+  align-items:center;
+}
+
+/* ===== IMAGEN ORGÁNICA ===== */
+.image-blob{
+  height:100%;
+  min-height:520px;              /* ⬅ más alto */
+  background:linear-gradient(135deg,#dbeafe,#eef6ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:0 65% 60% 0 / 0 55% 55% 0; /* forma más amplia */
+}
+
+.image-blob img{
+  width:480px;                   /* ⬅ más grande */
+  height:480px;                  /* ⬅ más grande */
+  object-fit:cover;
+  border-radius:50%;
+  background:#fff;
+  padding:14px;
+  box-shadow:0 30px 55px rgba(0,0,0,.18);
+}
+
+/* ===== CONTENT ===== */
+.detail-content{
+  padding:48px
+}
+
+.badge{
+  display:inline-block;
+  background:var(--soft);
+  color:var(--primary);
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600
+}
+
+.detail-content h2{
+  margin:14px 0 28px;
+  font-size:36px
+}
+
+.detail-content h3{
+  margin-top:28px;
+  color:var(--primary)
+}
+
+.detail-content p{
+  line-height:1.8;
+  color:#374151
+}
+
+ul{
+  padding-left:20px
+}
+
+ul li{
+  margin-bottom:10px
+}
+
+/* ===== PRICING ===== */
+.pricing{
+  margin-top:36px;
+  background:linear-gradient(135deg,#eef6ff,#ffffff);
+  padding:28px;
+  border-radius:18px
+}
+
+.pricing input{
+  width:100%;
+  margin-top:14px;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #cbd5e1
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png">
+  <div>
+    <h2>Servicios Gestionados Smart Cloud</h2>
+    <p>Seguridad · Continuidad · Operación Tecnológica</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- GRID -->
+  <div class="services-grid" id="serviceGrid"></div>
+
+  <!-- DETAIL -->
+  <div class="detail" id="serviceDetail"></div>
+
+</div>
+
+<script>
+const services = [
+{
+title:"🔥 Firewall Perimetral Gestionado (FWaaS)",
+img:"fw.png",
+priceType:"custom",
+price:"",
+objective:"Servicio de seguridad perimetral administrado que protege de forma continua la infraestructura tecnológica del cliente frente a accesos no autorizados, ciberataques y amenazas avanzadas de red. El servicio incluye control de tráfico entrante y saliente, filtrado de contenido, control de aplicaciones, inspección SSL y definición de políticas de seguridad personalizadas, ajustadas a los riesgos y necesidades específicas de cada organización.",
+scope:"Diseño, implementación, operación y soporte de la solución de firewall perimetral. Incluye definición de políticas de seguridad, control de tráfico, administración de reglas, atención de incidentes y soporte remoto bajo acuerdos de nivel de servicio (SLA). No incluye rediseños mayores ni proyectos de migración complejos.",
+features:[
+"Integración nativa con la infraestructura del Data Center de Smart Cloud, administración centralizada y alta disponibilidad (HA) para garantizar continuidad operativa.",
+"Administración centralizada de políticas de seguridad",
+"Protección contra amenazas externas y tráfico malicioso",
+"Soporte 24/7 y operación bajo buenas prácticas de seguridad",
+"Alineación con ISO 27001"
+]
+},
+{
+title:"🛡️ SOC Nivel 1",
+img:"soc.png",
+priceType:"custom",
+price:"",
+objective:"Servicio de monitoreo de seguridad que centraliza, correlaciona y analiza en tiempo real los eventos generados por la infraestructura tecnológica del cliente, permitiendo una detección temprana de amenazas y comportamientos anómalos.",
+scope:"Monitoreo continuo de eventos de seguridad, análisis inicial de alertas, clasificación de incidentes y escalamiento a niveles superiores cuando aplique. Incluye reportes periódicos y comunicación controlada con el cliente y Flujos de escalamiento definidos hacia niveles superiores (N2 / N3).",
+features:[
+"Monitoreo 24/7 de eventos de seguridad",
+"Centralización y correlación de logs",
+"Playbooks de respuesta inicial",
+"Reportes personalizados y métricas de desempeño del servicio",
+"Plataforma escalable según el crecimiento del cliente",
+"Clasificación y gestión inicial de alertas de seguridad"
+]
+},
+{
+title:"📡 Monitoreo de Infraestructura (NOC 24/7)",
+img:"soc.png",
+priceType:"custom",
+price:"",
+objective:"Servicio de monitoreo continuo de la operación de las infraestructuras tecnológicas del cliente, orientado a asegurar la continuidad, disponibilidad y estabilidad del negocio mediante supervisión proactiva y atención permanente.",
+scope:"El servicio opera bajo un modelo de atención 24/7, con flujos definidos de detección, escalamiento y comunicación al cliente, integrando el NOC con el SOC cuando aplique. Incluye la gestión de incidentes de primer nivel (N1) y la definición de indicadores de disponibilidad, tiempos de respuesta y resolución, asegurando una operación controlada y medible.",
+features:[
+"Monitoreo continuo 24/7 de infraestructura crítica",
+"Detección temprana de fallos y generación de alertas automáticas",
+"Integración NOC–SOC para cobertura integral de infraestructura y seguridad",
+"Servicio configurable según la herramienta de monitoreo requerida",
+"Equipo especializado y certificado con atención permanente",
+"Reportes personalizados por cliente con métricas de desempeño"
+]
+},
+{
+title:"🌐 WAF Gestionado",
+img:"waf.png",
+priceType:"custom",
+price:"",
+objective:"Servicio de protección avanzada para aplicaciones y portales web que resguarda las aplicaciones críticas frente a ataques de capa 7, como los contemplados en el OWASP Top 10 (SQL Injection, XSS, DoS, entre otros). Permite asegurar la disponibilidad, integridad y continuidad operativa de los servicios web del cliente mediante control y análisis del tráfico HTTPS.",
+scope:"El servicio de WAF gestionado cubre la protección de aplicaciones web públicas y privadas mediante la definición y administración de reglas estándar y personalizadas, su integración con firewalls perimetrales internos y externos, balanceadores ADC y el SOC, así como los procesos de implementación, gestión de cambios, monitoreo continuo, pruebas y validación para garantizar una protección efectiva y ajustada al perfil de riesgo del cliente.",
+features:[
+"Protección OWASP Top 10",
+"Control de tráfico HTTPS",
+"Monitoreo continuo de eventos de seguridad",
+"Soporte especializado 24/7",
+"Integración con balanceadores ADC y firewalls",
+"Reglas de seguridad estándar y personalizadas"
+]
+},
+{
+title:"💾 Backup & DRP",
+img:"backup.png",
+priceType:"custom",
+price:"",
+objective:"Servicio gestionado y/o automatizado de copias de seguridad y recuperación ante desastres, diseñado para proteger la información crítica del cliente mediante réplicas locales y esquemas de recuperación confiables. La solución es customizable y previamente viabilizada con el cliente, garantizando continuidad del negocio y protección efectiva de los datos.",
+scope:"El servicio establece la estrategia de respaldo y continuidad del cliente mediante la definición de ambientes, políticas de backup, RPO y RTO estándar por segmento, arquitecturas de Backup y DRP compatibles con la plataforma, así como un programa de pruebas periódicas de restauración. Incluye la generación de documentación, procedimientos operativos y métricas que permitan validar el éxito de las copias y la efectividad de los procesos de recuperación.",
+features:[
+"Copias de seguridad automatizadas y gestionadas",
+"Políticas de backup personalizadas por cliente",
+"Réplicas locales y esquemas de recuperación ante desastres",
+"Definición y cumplimiento de RPO y RTO garantizados",
+"Pruebas periódicas de restauración y validación",
+"Alineación con buenas prácticas y cumplimiento de ISO 27001"
+]
+},
+{
+title:"📦 Almacenamiento",
+img:"backup.png",
+priceType:"fixed",
+price:"",
+objective:"Servicio de almacenamiento empresarial provisto dentro de la infraestructura de Smart Cloud, diseñado para soportar aplicaciones y cargas de trabajo críticas con altos niveles de rendimiento, disponibilidad y seguridad.",
+scope:"El servicio se encuentra alineado a estándares de plataforma de almacenamiento que contemplan rendimiento, resiliencia, segmentación por niveles de servicio y controles de seguridad, así como su integración con soluciones de Backup y Recuperación (BaaS/DRaaS) y servicios de Hosting. Incluye la gestión continua de la capacidad, el crecimiento planificado y los procesos de renovación tecnológica para garantizar la continuidad y escalabilidad del entorno del cliente.",
+features:[
+"Almacenamiento de alto rendimiento para cargas críticas",
+"Arquitecturas resilientes y altamente disponibles",
+"Segmentación por niveles de servicio según necesidad del cliente",
+"Integración nativa con BaaS/DRaaS y Hosting",
+"Gestión de capacidad y escalabilidad bajo demanda",
+"Tecnologías líderes posicionadas en el Cuadrante Mágico de Gartner 2025"
+]
+},
+{
+title:"☁️ Hosting virtual",
+img:"backup.png",
+priceType:"custom",
+price:"",
+objective:"Servicio de alojamiento virtual sobre la infraestructura de Smart Cloud que permite a los clientes desplegar y operar sus aplicaciones y servicios en máquinas virtuales seguras, escalables y de alto rendimiento, con aprovisionamiento ágil y controlado según las necesidades del negocio.",
+scope:"El servicio contempla una oferta de hosting por tipo de máquina (Básico, Medio y Personalizado), incluyendo capacidades de cómputo, almacenamiento, esquemas de seguridad y opciones de respaldo (incluido o no incluido), así como su integración con FWaaS, BaaS, NOC y SOC. Adicionalmente, gobierna la capacidad de la plataforma de virtualización, replicación y orquestación (incluyendo contenedores y Kubernetes), junto con los procesos de aprovisionamiento, cambios y baja de servicios, garantizando agilidad operativa y control de costos.",
+features:[
+"Creación y gestión de máquinas virtuales bajo demanda",
+"Autogestión del servicio y escalabilidad flexible (crecer o reducir recursos)",
+"Infraestructura de servidores virtualizados (IaaS) para múltiples cargas de trabajo",
+"Procesos alineados a ISO 27001:2022 y continuidad de negocio ISO 22301:2019"
+]
+},
+
+{
+title:"🏢 Colocación",
+img:"colocacion.png",
+priceType:"fixed",
+price:"",
+objective:"Servicio de hospedaje de infraestructura física del cliente en el Data Center de Smart Cloud, que incluye el alquiler de espacio y energía para la colocación segura de equipos críticos en un entorno controlado y de alta disponibilidad.",
+scope:"El servicio define claramente los límites de responsabilidad entre el cliente y Smart Cloud, alineando la operación de sala, inventarios y control de accesos con los servicios de NOC y manos remotas (N1). Adicionalmente, establece KPIs de disponibilidad y cumplimiento para garantizar la continuidad y confiabilidad del servicio.",
+features:[
+"Data Center con enfoque en resiliencia operativa, en proceso de certificación Tier III y alineado a ISO 27001 e ISO 22301",
+"Entorno físico seguro, disponible y energéticamente eficiente para infraestructura crítica",
+"Operación local dentro del territorio nacional, con procesos de continuidad de negocio certificados",
+"Beneficios operativos y aduaneros por operación en Zona Franca (Smart Cloud como usuario calificado)"
+]
+},
+
+{
+title:"♿ inSuit Tools™ – Accesibilidad web",
+img:"colocacion.png",
+priceType:"custom",
+price:"",
+objective:"Solución de accesibilidad web en modalidad SaaS, impulsada por inteligencia artificial y respaldada por expertos humanos certificados en accesibilidad, que proporciona ayudas técnicas de navegación mediante interfaces adaptadas a distintos tipos de discapacidad (inSuit Tools™) y remedia errores de accesibilidad en tiempo real sin modificar el código original del sitio (inSuit Accessibility Manager™). El servicio facilita el alineamiento con las WCAG 2.2, mejora la puntuación en evaluadores de accesibilidad y garantiza una experiencia digital inclusiva.",
+scope:"El servicio contempla el diseño y despliegue estandarizado de inSuit Tools™ y su complemento inSuit Accessibility Manager™, bajo una metodología que incluye auditoría inicial, configuración por expertos, validación y puesta en producción. Cada implementación entrega documentación y guías de uso, ofreciendo ayudas técnicas y remediación de accesibilidad en tiempo real gestionadas por especialistas, asegurando operación continua sin modificar el código fuente del sitio web y excluyendo desarrollos o rediseños adicionales.",
+features:[
+"Interfaces adaptadas a distintos tipos de discapacidad y perfiles de usuario",
+"Remediación automática de errores de accesibilidad sin modificar el código fuente",
+"Cumplimiento de WCAG 2.2 y mejora medible en evaluadores de accesibilidad",
+"Despliegue inmediato en modalidad SaaS",
+"Soporte técnico especializado 24/7 y mejora tangible de la experiencia de usuario"
+]
+},
+
+{
+title:"👍 KRIXO",
+img:"colocacion.png",
+priceType:"custom",
+price:"",
+objective:"Solución de monitoreo continuo de amenazas digitales que escanea en tiempo real las distintas capas de la web para identificar posibles situaciones de riesgo que puedan comprometer la información de las organizaciones. KRIXO permite detectar de forma temprana exposiciones, filtraciones y vectores de ataque, generando alertas oportunas para mitigar el riesgo de ciberataques antes de que se materialicen.",
+scope:"El servicio contempla el diseño y despliegue estandarizado de KRIXO ONE como solución de detección de amenazas provenientes de la web, alertando en tiempo real sobre hallazgos relevantes para la organización. Incluye una metodología clara de implementación y socialización de los módulos y funcionalidades, asegurando que los equipos del cliente comprendan, interpreten y actúen de manera efectiva frente a los riesgos identificados.",
+features:[
+"Monitoreo en tiempo real de la superficie de ataque digital de la organización",
+"Detección temprana de vulnerabilidades, credenciales filtradas y fugas de información expuesta",
+"Centralización de alertas claras y accionables para una respuesta rápida",
+"Inteligencia artificial y ciberinteligencia 24/7 sobre la Deep y Dark Web",
+"Monitoreo de más de 8.000 comunidades para visibilidad avanzada de amenazas",
+"Priorización de riesgos para reducir exposición, impacto y tiempos de respuesta"
+]
+}
+];
+
+const grid = document.getElementById('serviceGrid');
+services.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='service-card'+(i===0?' active':'');
+  d.innerHTML=`
+    <img src="${s.img}" alt="${s.title}">
+    <h4>${s.title}</h4>
+    <span>Ver detalle ➜</span>
+  `;
+  d.onclick=()=>showService(i);
+  grid.appendChild(d);
+});
+
+
+function showService(i){
+  document.querySelectorAll('.service-card')
+    .forEach((c,idx)=>c.classList.toggle('active',idx===i));
+
+  const s=services[i];
+  document.getElementById('serviceDetail').innerHTML=`
+  <div class="detail-inner">
+    <div class="image-blob">
+      <img src="${s.img}">
+    </div>
+
+    <div class="detail-content">
+      <span class="badge">${s.priceType==='custom'?'💬 Precio Customizable':'📊 Precio por Capacidad'}</span>
+      <h2>${s.title}</h2>
+
+      <h3>🎯 Objetivo</h3>
+      <p>${s.objective}</p>
+
+      <h3>📌 Alcance</h3>
+      <p>${s.scope}</p>
+
+      <h3>✨ Características</h3>
+      <ul>${s.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+
+      <div class="pricing">
+        <strong>💰 Modelo de Precio</strong><br>
+        ${s.priceType==='custom'
+          ?'Servicio con precio configurable según necesidades del cliente.'
+          :'Servicio con precio definido según capacidad y requerimientos.'}
+        <input placeholder="Ingrese el precio (ej: USD 350 / mes)"
+          value="${s.price}"
+          oninput="services[${i}].price=this.value">
+      </div>
+    </div>
+  </div>`;
+}
+
+showService(0);
+</script>
+
+</body>
+</html>

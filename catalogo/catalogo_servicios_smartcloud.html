@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo de Servicios | Smart Cloud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root{
+  --primary:#3f86c6;
+  --dark:#1f2937;
+  --light:#f5f9fd;
+  --card:#ffffff;
+  --radius:16px;
+}
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{margin:0;background:var(--light);color:var(--dark)}
+header{
+  background:linear-gradient(135deg,#3f86c6,#2f6fa5);
+  color:#fff;
+  padding:24px 32px;
+  display:flex;
+  align-items:center;
+  gap:20px
+}
+header img{height:42px}
+.container{max-width:1200px;margin:auto;padding:32px}
+.layout{display:grid;grid-template-columns:300px 1fr;gap:24px}
+.sidebar,.content{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:20px
+}
+.service-item{
+  padding:14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:14px;
+  margin-bottom:8px
+}
+.service-item:hover{background:#e6f0fa}
+.service-item.active{
+  background:#3f86c6;
+  color:#fff;
+  font-weight:600
+}
+.service-img{
+  width:100%;
+  max-height:240px;
+  object-fit:cover;
+  border-radius:12px;
+  margin:16px 0
+}
+.badge{
+  background:#e6f0fa;
+  color:#2f6fa5;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700
+}
+.pricing{
+  background:#f0f6fc;
+  padding:18px;
+  border-radius:12px;
+  margin-top:24px
+}
+button{
+  background:#3f86c6;
+  color:#fff;
+  border:none;
+  padding:12px 18px;
+  border-radius:10px;
+  cursor:pointer
+}
+.pdf-page{padding:40px;page-break-after:always}
+.pdf-cover{text-align:center;padding-top:200px}
+.pdf-cover img{height:80px;margin-bottom:30px}
+.pdf-footer{
+  margin-top:40px;
+  font-size:10px;
+  color:#6b7280;
+  border-top:1px solid #e5e7eb;
+  padding-top:6px;
+  display:flex;
+  justify-content:space-between
+}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.png">
+  <div>
+    <h2>Catálogo de Servicios Gestionados</h2>
+    <p>Smart Cloud · Seguridad · Continuidad · Operación</p>
+  </div>
+</header>
+<div class="container">
+<div class="layout">
+<div class="sidebar">
+  <div class="service-item active" onclick="showService(0)">Firewall Gestionado</div>
+  <div class="service-item" onclick="showService(1)">SOC Nivel 1</div>
+  <div class="service-item" onclick="showService(2)">WAF Gestionado</div>
+  <div class="service-item" onclick="showService(3)">Backup & DR</div>
+  <div class="service-item" onclick="showService(4)">Almacenamiento</div>
+  <div class="service-item" onclick="showService(5)">Colocación</div>
+</div>
+<div class="content" id="serviceContent"></div>
+</div>
+</div>
+<script>
+const services=[
+{title:"Firewall Perimetral Gestionado (FWaaS)",img:"fw.png",priceType:"custom",objective:"Proteger la infraestructura tecnológica del cliente frente a accesos no autorizados, ataques externos y amenazas de red, garantizando la continuidad del negocio y la seguridad de la información.",scope:"Diseño, implementación, operación y soporte del firewall perimetral.",features:["Administración centralizada","Soporte 24/7","Cumplimiento ISO 27001"]},
+{title:"SOC Nivel 1",img:"soc.png",priceType:"custom",objective:"Detectar eventos de seguridad de forma temprana.",scope:"Monitoreo continuo y escalamiento.",features:["Logs","Alertas","Reportes"]},
+{title:"WAF Gestionado",img:"waf.png",priceType:"custom",objective:"Proteger aplicaciones web.",scope:"Implementación y monitoreo.",features:["OWASP","SSL","Soporte"]},
+{title:"Backup y DR",img:"backup.png",priceType:"custom",objective:"Garantizar recuperación de información.",scope:"Respaldo y pruebas.",features:["RPO/RTO","Pruebas","Continuidad"]},
+{title:"Almacenamiento Gestionado",img:"storage.png",priceType:"fixed",objective:"Proveer almacenamiento seguro.",scope:"Capacidad según necesidad.",features:["Escalable","Alta disponibilidad","Precio por capacidad"]},
+{title:"Colocación",img:"colocacion.png",priceType:"fixed",objective:"Hospedar infraestructura física.",scope:"Espacio, energía y seguridad.",features:["Data Center","Seguridad","Modelo fijo"]}
+];
+function showService(i){
+ const s=services[i];
+ document.querySelectorAll('.service-item').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+ document.getElementById('serviceContent').innerHTML=`
+ <span class="badge">${s.priceType==="custom"?"Precio Customizable":"Precio por Capacidad"}</span>
+ <h2>${s.title}</h2>
+ <img class="service-img" src="${s.img}">
+ <h3>Objetivo</h3><p>${s.objective}</p>
+ <h3>Alcance</h3><p>${s.scope}</p>
+ <h3>Características</h3>
+ <ul>${s.features.map(f=>`<li>${f}</li>`).join("")}</ul>
+ <div class="pricing"><strong>Modelo de Precio:</strong><br>${s.priceType==="custom"?"Configurado según necesidades del cliente.":"Definido por capacidad requerida."}</div>
+ <br><button onclick="exportPDF()">📄 Exportar a PDF</button>`;
+}
+function exportPDF(){
+ const pdf=document.createElement("div");
+ pdf.innerHTML+=`<div class="pdf-page pdf-cover"><h1>Catálogo de Servicios Smart Cloud</h1></div>`;
+ services.forEach(s=>{
+  pdf.innerHTML+=`<div class="pdf-page"><h2>${s.title}</h2><p><strong>Objetivo:</strong> ${s.objective}</p><p><strong>Alcance:</strong> ${s.scope}</p><ul>${s.features.map(f=>`<li>${f}</li>`).join("")}</ul><p><strong>Modelo de Precio:</strong> ${s.priceType==="custom"?"Customizable":"Por capacidad"}</p><div class="pdf-footer"><span>Smart Cloud</span><span>www.smart-cloud.co</span></div></div>`;
+ });
+ html2pdf().set({filename:"Catalogo_Servicios_SmartCloud.pdf",html2canvas:{scale:2},jsPDF:{format:"a4"}}).from(pdf).save();
+}
+showService(0);
+</script>
+</body>
+</html>
