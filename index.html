@@ -524,8 +524,10 @@ function openService(i){
   const s = services[i];
 
   // Ocultar home e intro mientras se ve el detalle
-  home.style.display = 'none';
-  document.querySelector('.intro').style.display = 'none';
+home.style.display = 'none';
+document.querySelector('.intro').style.display = 'none';
+document.querySelector('.iso-section').style.display = 'none';
+
 
   const detail = document.getElementById('detail');
   detail.style.display = 'block';
@@ -586,8 +588,10 @@ function openService(i){
 function goHome(){
   // Mostrar nuevamente intro y catálogo
   document.getElementById('detail').style.display = 'none';
-  home.style.display = 'grid';
-  document.querySelector('.intro').style.display = 'block';
+home.style.display = 'grid';
+document.querySelector('.intro').style.display = 'block';
+document.querySelector('.iso-section').style.display = 'block';
+
 
   // Subir scroll al inicio
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -597,6 +601,7 @@ function goHome(){
 
 </body>
 </html>
+
 
 
 
