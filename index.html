@@ -242,6 +242,11 @@ main{
   line-height:1.8;
 }
 
+/* ISO como cierre en vista detalle */
+.detail-footer{
+  margin-top: 100px;
+}
+
 /* ===== SELLOS ISO ===== */
 /* ===== SELLOS ISO (DEBAJO DEL CATÁLOGO) ===== */
 .iso-section{
@@ -525,7 +530,9 @@ function openService(i){
 
   // Ocultar home e intro mientras se ve el detalle
 home.style.display = 'none';
-document.querySelector('.intro').style.display = 'none';
+const iso = document.querySelector('.iso-section');
+iso.style.display = 'block';
+iso.classList.add('detail-footer');
 
 
 
@@ -595,6 +602,7 @@ document.querySelector('.intro').style.display = 'block';
 
 </body>
 </html>
+
 
 
 
