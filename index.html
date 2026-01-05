@@ -242,11 +242,6 @@ main{
   line-height:1.8;
 }
 
-/* ISO como cierre en vista detalle */
-.detail-footer{
-  margin-top: 100px;
-}
-
 /* ===== SELLOS ISO ===== */
 /* ===== SELLOS ISO (DEBAJO DEL CATÁLOGO) ===== */
 .iso-section{
@@ -284,31 +279,6 @@ main{
   opacity: 1;
 }
 
-/* ===== CUMPLIMIENTO ISO EN DETALLE ===== */
-.iso-compliance{
-  margin: 14px 0 26px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 18px;
-}
-
-.iso-pill{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  background: #f1f5f9;
-  color: #334155;
-}
-
-.iso-pill::before{
-  content: "✔";
-  color: #2563eb;
-  font-weight: 900;
-}
 
 	
 ul{padding-left:20px}
@@ -529,10 +499,8 @@ function openService(i){
   const s = services[i];
 
   // Ocultar home e intro mientras se ve el detalle
-home.style.display = 'none';
-document.querySelector('.iso-section').style.display = 'none';
-
-
+  home.style.display = 'none';
+  document.querySelector('.intro').style.display = 'none';
 
   const detail = document.getElementById('detail');
   detail.style.display = 'block';
@@ -557,6 +525,7 @@ document.querySelector('.iso-section').style.display = 'none';
 </div>
 
         <h2>${s.title}</h2>
+
         <h3>🎯 Objetivo</h3>
         <p>${s.objective}</p>
 
@@ -587,10 +556,8 @@ document.querySelector('.iso-section').style.display = 'none';
 function goHome(){
   // Mostrar nuevamente intro y catálogo
   document.getElementById('detail').style.display = 'none';
-home.style.display = 'grid';
-document.querySelector('.intro').style.display = 'block';
-
-
+  home.style.display = 'grid';
+  document.querySelector('.intro').style.display = 'block';
 
   // Subir scroll al inicio
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -600,16 +567,3 @@ document.querySelector('.intro').style.display = 'block';
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
